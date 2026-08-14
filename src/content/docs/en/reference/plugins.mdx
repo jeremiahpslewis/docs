@@ -1276,7 +1276,7 @@ In this example, values are automatically repeated every 30 s, except when the v
 - Write value `0` → Watchdog **stops** (since `0` is defined in `reset`)
 - No further repetitions until a new value != `0` is written
 
-**Example with battery control** (`batterymode` uses values 1=normal, 2=hold, 3=charge):
+**Example with battery control** (`batterymode` uses values 1=normal, 2=hold, 3=charge, 4=holdcharge):
 
 ```yaml
 batterymode:
@@ -1298,4 +1298,11 @@ batterymode:
         set:
           source: modbus
           # ... Modbus configuration for charge mode
+      - case: 4 # holdcharge
+        set:
+          source: modbus
+          # ... Modbus configuration for holdcharge mode
 ```
+
+Cover every mode your battery supports, or add a `default`.
+Without a matching case the write fails, the battery keeps its previous mode and that mode is also what stays visible on the API.

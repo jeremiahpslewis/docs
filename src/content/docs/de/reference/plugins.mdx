@@ -1278,7 +1278,7 @@ In diesem Beispiel werden Werte automatisch alle 30 s wiederholt, außer wenn de
 - Schreibe Wert `0` → Watchdog **stoppt** (da `0` in `reset` definiert)
 - Keine weiteren Wiederholungen, bis ein neuer Wert != `0` geschrieben wird
 
-**Beispiel mit Batteriesteuerung** (`batterymode` verwendet Werte 1=normal, 2=hold, 3=charge):
+**Beispiel mit Batteriesteuerung** (`batterymode` verwendet Werte 1=normal, 2=hold, 3=charge, 4=holdcharge):
 
 ```yaml
 batterymode:
@@ -1300,4 +1300,11 @@ batterymode:
         set:
           source: modbus
           # ... Modbus-Konfiguration für Lademodus
+      - case: 4 # holdcharge
+        set:
+          source: modbus
+          # ... Modbus-Konfiguration für den Holdcharge-Modus
 ```
+
+Alle Modi abdecken, die deine Batterie unterstützt, oder ein `default` ergänzen.
+Ohne passenden Fall schlägt der Schreibvorgang fehl, die Batterie behält ihren bisherigen Modus und genau dieser bleibt auch über die API sichtbar.
